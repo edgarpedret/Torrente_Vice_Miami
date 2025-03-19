@@ -1,4 +1,4 @@
-# Torrente Vice
+# Torrente Vice 🚬💶🔪
 ## Joc de Torrente
 ### Creat per Kristopher Gonzalez, Javier Jaca i Edgar Pedret
 ### Dsitribució de la feina
