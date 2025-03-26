@@ -14,6 +14,7 @@ BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 ROJO = (200, 0, 0)
 AMARILLO_TITULO = (215, 150, 0)
+AMARILLO_SUBSTITULO = (198, 119, 0)
 
 # Cargamos la imagen de inicio
 start_image = pygame.image.load('assets/2.jpg')
@@ -29,7 +30,6 @@ font_entrar = pygame.font.SysFont("arial", 50)
 subtitulo_font = pygame.font.SysFont("arial", 50, bold=True)
 menu_font = pygame.font.SysFont("georgia", 74)
 credits_font = pygame.font.SysFont("georgia", 50)
-
 
 # Imagen de créditos
 credits_image = pygame.image.load('assets/images.jpeg')
@@ -51,8 +51,8 @@ def show_sinopsis_screen():
 
     # Sinopsis del juego
     story_text = [
-        "Torrente, orgulloso agente de la policía local de Miami Platja, ",
-        "pasó de hacer rondas a hacer el ridículo en 2018, cuando lo ",
+        "Era se una vez Torrente, orgulloso agente de la policía local de ",
+        "Miami Platja, pasó de hacer rondas a hacer el ridículo en 2018, cuando lo ",
         "encontraron patrullando borracho como una cuba. Pero no estaba ",
         "solo. Lo acompañaban unos chavales de 12 años a los que, en un ",
         "acto de genialidad suprema, les dejó su pistola reglamentaria para ",
@@ -66,11 +66,11 @@ def show_sinopsis_screen():
     ]
     
     # Fuente para el texto de la historia
-    story_font = pygame.font.Font("assets/fonts/BonaNovaSC-Regular.ttf", 30)
+    sinopsis_font = pygame.font.SysFont("timesnewroman", 30)
     
     y_offset = SCREEN_HEIGHT // 2 - 250  # Empezar en el centro de la pantalla
     for line in story_text:
-        text = story_font.render(line, True, BLANCO)
+        text = sinopsis_font.render(line, True, BLANCO)
         screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, y_offset))
         y_offset += 40  # Espaciado entre las líneas del texto
 
@@ -91,19 +91,39 @@ def show_sinopsis_screen():
                 if event.key == pygame.K_RETURN:
                     waiting_for_input = False  # Salir de la pantalla de historia
 
+
 # Función para mostrar la pantalla de inicio
 def show_start_screen():
     while True:
         screen.blit(start_image, (0, 0))
-        
+
+
+        # Relieve Hacia abajo
+        title_text = titulo_font.render("Torrente Vice", True, (0, 0, 0))
+        screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2 + 2, SCREEN_HEIGHT // 2 - 348))
+        # Relieve Hacia derecho
+        title_text = titulo_font.render("Torrente Vice", True, (0,0,0))
+        screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2 + 3, SCREEN_HEIGHT // 2 - 350))
         # Mostrar el título "Torrente Vice"
         title_text = titulo_font.render("Torrente Vice", True, AMARILLO_TITULO)
-        screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2, SCREEN_HEIGHT // 2 - 150))
-        
+        screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2, SCREEN_HEIGHT // 2 - 350))
+
+        # Relieve hacia abajo
+        subtitle_text = subtitulo_font.render("El brazo tonto de la ley", True, (0, 0, 0))
+        screen.blit(subtitle_text, (SCREEN_WIDTH // 2 - subtitle_text.get_width() // 2, SCREEN_HEIGHT // 2 - 278))
+        # Relieve hacia derecha
+        subtitle_text = subtitulo_font.render("El brazo tonto de la ley", True, (0, 0, 0))
+        screen.blit(subtitle_text, (SCREEN_WIDTH // 2 - subtitle_text.get_width() // 2 + 3, SCREEN_HEIGHT // 2 - 280))
         # Mostrar el subtítulo "El brazo tonto de la ley"
-        subtitle_text = subtitulo_font.render("El brazo tonto de la ley", True, AMARILLO_TITULO)
-        screen.blit(subtitle_text, (SCREEN_WIDTH // 2 - subtitle_text.get_width() // 2, SCREEN_HEIGHT // 2 - 80))
-        
+        subtitle_text = subtitulo_font.render("El brazo tonto de la ley", True, AMARILLO_SUBSTITULO)
+        screen.blit(subtitle_text, (SCREEN_WIDTH // 2 - subtitle_text.get_width() // 2, SCREEN_HEIGHT // 2 - 280))
+
+        # Relieve hacia abajo
+        text = font_entrar.render("Presiona Enter para empezar", True, (0, 0, 0))
+        screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT - 98))
+        # Relieve hacia derecha
+        text = font_entrar.render("Presiona Enter para empezar", True, (0, 0, 0))
+        screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2 + 3, SCREEN_HEIGHT - 100))
         # Mostrar el mensaje "Presiona Enter para empezar"
         text = font_entrar.render("Presiona Enter para empezar", True, BLANCO)
         screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT - 100))
@@ -122,15 +142,21 @@ def show_start_screen():
 def show_menu():
     screen.blit(background_image, (0, 0))  # Fondo del menú
 
+    # Relieve hacia derecha
+    title_text = menu_font.render("Menú Principal", True, (0, 0, 0))
+    screen.blit(title_text, (SCREEN_WIDTH // 4 - title_text.get_width() // 2 - 3, 150))
+    # Relieve hacia arriba
+    title_text = menu_font.render("Menú Principal", True, (0, 0, 0))
+    screen.blit(title_text, (SCREEN_WIDTH // 4 - title_text.get_width() // 2 - 7, 147))
     # Mostrar el título
     title_text = menu_font.render("Menú Principal", True, BLANCO)
-    screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2, 150))
+    screen.blit(title_text, (SCREEN_WIDTH // 4 - title_text.get_width() // 2 - 7, 150))
 
     # Mostrar opciones
     options = ["1 - Jugar", "2 - Salir", "3 - Créditos"]
     for i, option in enumerate(options):
         option_text = menu_font.render(option, True, BLANCO)
-        screen.blit(option_text, (SCREEN_WIDTH // 2 - option_text.get_width() // 2, 350 + i * 100))
+        screen.blit(option_text, (SCREEN_WIDTH // 8 - option_text.get_width() // 30, 350 + i * 100))
 
     pygame.display.flip()
 
