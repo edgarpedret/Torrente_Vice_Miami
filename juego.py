@@ -5,33 +5,33 @@ import sys
 pygame.init()
 
 # Definimos el tamaño de la pantalla y otras variables
-SCREEN_WIDTH, SCREEN_HEIGHT = 1366, 768
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Menú Torrente Vice")
+SCREEN_WIDTH, SCREEN_HEIGHT = 1366, 768  # Dimensiones de la pantalla
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))  # Crear pantalla
+pygame.display.set_caption("Torrente Vice")  # Título de la ventana
 
-# Colores
+# Colores definidos en RGB
 BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 ROJO = (200, 0, 0)
 AMARILLO_TITULO = (215, 150, 0)
 AMARILLO_SUBSTITULO = (198, 119, 0)
 
-# Cargamos la imagen de inicio
+# Cargar la imagen de inicio
 start_image = pygame.image.load('assets/2.jpg')
 start_image = pygame.transform.scale(start_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# Cargamos la imagen de fondo del menú
+# Cargar la imagen de fondo del menú
 background_image = pygame.image.load('assets/images.jpeg')
 background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# Fuente para los textos del menú
-titulo_font = pygame.font.SysFont("georgia", 74, bold=True)
-font_entrar = pygame.font.SysFont("arial", 50)
-subtitulo_font = pygame.font.SysFont("arial", 50, bold=True)
-menu_font = pygame.font.SysFont("georgia", 74)
-credits_font = pygame.font.SysFont("georgia", 50)
+# Fuentes para los textos del menú
+titulo_font = pygame.font.SysFont("georgia", 74, bold=True)  # Fuente para el título
+font_entrar = pygame.font.SysFont("arial", 50)  # Fuente para el texto de "Presiona Enter"
+subtitulo_font = pygame.font.SysFont("arial", 50, bold=True)  # Fuente para subtítulos
+menu_font = pygame.font.SysFont("georgia", 74)  # Fuente para el menú
+credits_font = pygame.font.SysFont("georgia", 50)  # Fuente para los créditos
 
-# Imagen de créditos
+# Cargar la imagen de créditos
 credits_image = pygame.image.load('assets/images.jpeg')
 credits_image = pygame.transform.scale(credits_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -45,9 +45,10 @@ credits_text = [
     "Gracias por jugar a nuestro juego, esperemos que hayas disfrutado!!!"
 ]
 
+
 # Función para mostrar la pantalla con la sinopsis del juego
 def show_sinopsis_screen():
-    screen.fill(NEGRO)  # Pantalla de fondo negro
+    screen.fill(NEGRO)  # Fondo negro para la pantalla de sinopsis
 
     # Sinopsis del juego
     story_text = [
@@ -62,17 +63,16 @@ def show_sinopsis_screen():
         "entonces, la justicia, los medios y su propia madre lo conocen ",
         "como “El Brazo Tonto de la Ley”. Ahora se dedica a trabajar ",
         "por libre en los peores lugares de la ciudad."
-
     ]
-    
+
     # Fuente para el texto de la historia
     sinopsis_font = pygame.font.SysFont("timesnewroman", 30)
-    
-    y_offset = SCREEN_HEIGHT // 2 - 250  # Empezar en el centro de la pantalla
+
+    y_offset = SCREEN_HEIGHT // 2 - 250  # Iniciar en el centro vertical
     for line in story_text:
         text = sinopsis_font.render(line, True, BLANCO)
         screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, y_offset))
-        y_offset += 40  # Espaciado entre las líneas del texto
+        y_offset += 40  # Espaciado entre líneas
 
     # Mostrar "Presiona Enter para continuar"
     continue_text = pygame.font.SysFont("arial", 40).render("Presiona Enter para continuar", True, BLANCO)
@@ -95,14 +95,13 @@ def show_sinopsis_screen():
 # Función para mostrar la pantalla de inicio
 def show_start_screen():
     while True:
-        screen.blit(start_image, (0, 0))
-
+        screen.blit(start_image, (0, 0))  # Mostrar imagen de inicio
 
         # Relieve Hacia abajo
         title_text = titulo_font.render("Torrente Vice", True, (0, 0, 0))
         screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2 + 2, SCREEN_HEIGHT // 2 - 348))
         # Relieve Hacia derecho
-        title_text = titulo_font.render("Torrente Vice", True, (0,0,0))
+        title_text = titulo_font.render("Torrente Vice", True, (0, 0, 0))
         screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2 + 3, SCREEN_HEIGHT // 2 - 350))
         # Mostrar el título "Torrente Vice"
         title_text = titulo_font.render("Torrente Vice", True, AMARILLO_TITULO)
@@ -127,9 +126,9 @@ def show_start_screen():
         # Mostrar el mensaje "Presiona Enter para empezar"
         text = font_entrar.render("Presiona Enter para empezar", True, BLANCO)
         screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, SCREEN_HEIGHT - 100))
-        
+
         pygame.display.flip()
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -137,6 +136,7 @@ def show_start_screen():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     return  # Salir de la pantalla de inicio
+
 
 # Función para mostrar el menú
 def show_menu():
@@ -160,6 +160,7 @@ def show_menu():
 
     pygame.display.flip()
 
+
 # Función para mostrar los créditos
 def show_credits():
     screen.blit(credits_image, (0, 0))  # Fondo de créditos
@@ -179,6 +180,13 @@ def show_credits():
 
         # Dibujar cada línea de créditos con desplazamiento
         for i, line in enumerate(credits_text):
+            # Relieve hacia derecha
+            text = credits_font.render(line, True, (0, 0, 0))
+            screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2 + 2, y_offset + i * 60))
+            # Relieve hacia arriba
+            text = credits_font.render(line, True, (0, 0, 0))
+            screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, y_offset + i * 60 - 2))
+            # Credito
             text = credits_font.render(line, True, BLANCO)
             screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, y_offset + i * 60))
 
@@ -186,6 +194,7 @@ def show_credits():
 
         pygame.display.flip()
         pygame.time.delay(30)  # Pequeño retraso para el efecto de scroll
+
 
 # Función principal
 def main():
@@ -208,5 +217,7 @@ def main():
                 elif event.key == pygame.K_3:
                     show_credits()  # Mostrar créditos
 
+
 if __name__ == "__main__":
     main()
+
