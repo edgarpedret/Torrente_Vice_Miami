@@ -226,7 +226,7 @@ def main():
                 if event.key == pygame.K_1:
                     print("Cargando juego...")  # Aquí iría la lógica del juego
                     pygame.quit()
-                    subprocess.run(["python", "game.py"])
+                    subprocess.run(["python", "movement.py"])
                     sys.exit()
                 elif event.key == pygame.K_2:
                     pygame.quit()
