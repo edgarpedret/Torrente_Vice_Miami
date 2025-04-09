@@ -35,7 +35,7 @@ start_image = pygame.image.load('assets/background_images/1fondo.png')
 start_image = pygame.transform.scale(start_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Cargar la imagen de fondo del menú
-background_image = pygame.image.load('assets/background_images/images.jpeg')
+background_image = pygame.image.load('assets/background_images/1fondo.png')
 background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Fuentes para los textos del menú
@@ -46,7 +46,7 @@ menu_font = pygame.font.SysFont("georgia", 74)  # Fuente para el menú
 credits_font = pygame.font.SysFont("georgia", 50)  # Fuente para los créditos
 
 # Cargar la imagen de créditos
-credits_image = pygame.image.load('assets/background_images/images.jpeg')
+credits_image = pygame.image.load('assets/background_images/1fondo.png')
 credits_image = pygame.transform.scale(credits_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Texto de créditos
@@ -136,17 +136,6 @@ def show_start_screen():
 # Función para mostrar el menú
 def show_menu():
     screen.blit(background_image, (0, 0))  # Fondo del menú
-
-    # Relieve hacia derecha
-    title_text = menu_font.render("Menú Principal", True, (0, 0, 0))
-    screen.blit(title_text, (SCREEN_WIDTH // 4 - title_text.get_width() // 2 - 3, 150))
-    # Relieve hacia arriba
-    title_text = menu_font.render("Menú Principal", True, (0, 0, 0))
-    screen.blit(title_text, (SCREEN_WIDTH // 4 - title_text.get_width() // 2 - 7, 147))
-    # Mostrar el título
-    title_text = menu_font.render("Menú Principal", True, BLANCO)
-    screen.blit(title_text, (SCREEN_WIDTH // 4 - title_text.get_width() // 2 - 7, 150))
-
     # Mostrar opciones
     options = ["1 - Jugar", "2 - Salir", "3 - Créditos"]
     for i, option in enumerate(options):
@@ -176,8 +165,11 @@ def show_credits():
         # Dibujar cada línea de créditos con desplazamiento
         for i, line in enumerate(credits_text):
             # Relieve hacia derecha
-            text = credits_font.render(line, True, (0, 0, 0))
+            text = credits_font.render(line, True, (30, 30, 30))
             screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2 + 2, y_offset + i * 60))
+            # Izquierda relieve
+            text = credits_font.render(line, True, (200, 200, 200))
+            screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2 - 2, y_offset + i * 60))
             # Relieve hacia arriba
             text = credits_font.render(line, True, (0, 0, 0))
             screen.blit(text, (SCREEN_WIDTH // 2 - text.get_width() // 2, y_offset + i * 60 - 2))
