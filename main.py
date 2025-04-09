@@ -31,7 +31,7 @@ AMARILLO_TITULO = (215, 150, 0)
 AMARILLO_SUBSTITULO = (198, 119, 0)
 
 # Cargar la imagen de inicio
-start_image = pygame.image.load('assets/background_images/2.jpg')
+start_image = pygame.image.load('assets/background_images/1fondo.png')
 start_image = pygame.transform.scale(start_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Cargar la imagen de fondo del menú
@@ -111,25 +111,6 @@ def show_start_screen():
     while True:
         screen.blit(start_image, (0, 0))  # Mostrar imagen de inicio
 
-        # Relieve Hacia abajo
-        title_text = titulo_font.render("Torrente Vice", True, (0, 0, 0))
-        screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2 + 2, SCREEN_HEIGHT // 2 - 348))
-        # Relieve Hacia derecho
-        title_text = titulo_font.render("Torrente Vice", True, (0, 0, 0))
-        screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2 + 3, SCREEN_HEIGHT // 2 - 350))
-        # Mostrar el título "Torrente Vice"
-        title_text = titulo_font.render("Torrente Vice", True, AMARILLO_TITULO)
-        screen.blit(title_text, (SCREEN_WIDTH // 2 - title_text.get_width() // 2, SCREEN_HEIGHT // 2 - 350))
-
-        # Relieve hacia abajo
-        subtitle_text = subtitulo_font.render("El brazo tonto de la ley", True, (0, 0, 0))
-        screen.blit(subtitle_text, (SCREEN_WIDTH // 2 - subtitle_text.get_width() // 2, SCREEN_HEIGHT // 2 - 278))
-        # Relieve hacia derecha
-        subtitle_text = subtitulo_font.render("El brazo tonto de la ley", True, (0, 0, 0))
-        screen.blit(subtitle_text, (SCREEN_WIDTH // 2 - subtitle_text.get_width() // 2 + 3, SCREEN_HEIGHT // 2 - 280))
-        # Mostrar el subtítulo "El brazo tonto de la ley"
-        subtitle_text = subtitulo_font.render("El brazo tonto de la ley", True, AMARILLO_SUBSTITULO)
-        screen.blit(subtitle_text, (SCREEN_WIDTH // 2 - subtitle_text.get_width() // 2, SCREEN_HEIGHT // 2 - 280))
 
         # Relieve hacia abajo
         text = font_entrar.render("Presiona Enter para empezar", True, (0, 0, 0))
@@ -226,13 +207,13 @@ def main():
                 if event.key == pygame.K_1:
                     print("Cargando juego...")  # Aquí iría la lógica del juego
                     pygame.quit()
-                    subprocess.run(["python", "movement.py"])
+                    subprocess.run([sys.executable, "movement.py"]) # El sys.executable es perque utilitzi la mateixxa versió de python que el codi actual de main
                     sys.exit()
                 elif event.key == pygame.K_2:
+                    show_credits()  # Mostrar créditos
+                elif event.key == pygame.K_3:
                     pygame.quit()
                     sys.exit()
-                elif event.key == pygame.K_3:
-                    show_credits()  # Mostrar créditos
 
 
 if __name__ == "__main__":

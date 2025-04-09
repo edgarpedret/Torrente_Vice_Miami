@@ -5,6 +5,18 @@ from pygame.locals import *
 # Inicializar pygame
 pygame.init()
 
+# Inicializar el mezclador de sonido
+pygame.mixer.init()
+
+# Cargar la canción (debe estar en la carpeta del proyecto o indicar la ruta completa)
+pygame.mixer.music.load("assets/music/Apatrullando.mp3")  # Reemplaza con la ruta correcta
+
+# Ajustar volumen (opcional, valor entre 0.0 y 1.0)
+pygame.mixer.music.set_volume(0.2)
+
+# Reproducir la música en bucle infinito (-1)
+pygame.mixer.music.play(-1)
+
 # Tamaño de ventana
 VIEW_WIDTH = 1366
 VIEW_HEIGHT = 768
@@ -28,7 +40,7 @@ background_height = background_image.get_height()
 
 # Configuración del personaje
 player_image = pygame.image.load('assets/sprites/down0.png')
-protagonist_speed = 8
+protagonist_speed = 4
 player_rect = player_image.get_rect(midbottom=(VIEW_WIDTH // 2, VIEW_HEIGHT // 2))
 
 # Posiciones iniciales del fondo
