@@ -1,7 +1,7 @@
 # Torrente Vice 🚬💶🔪
 ## Joc de Torrente
 ### Creat per Kristopher Gonzalez, Javier Jaca i Edgar Pedret
-### Dsitribució de la feina
+### Distribució de la feina
 #### Gràfics: Kristopher Gonzalez
 #### Codi: Javier Jaca i Edgar Pedret 
 #### Guió: Kristopher Gonzalez
