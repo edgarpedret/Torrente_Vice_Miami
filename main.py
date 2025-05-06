@@ -42,7 +42,7 @@ background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREE
 titulo_font = pygame.font.SysFont("georgia", 74, bold=True)  # Fuente para el título
 font_entrar = pygame.font.SysFont("arial", 50)  # Fuente para el texto de "Presiona Enter"
 subtitulo_font = pygame.font.SysFont("arial", 50, bold=True)  # Fuente para subtítulos
-menu_font = pygame.font.SysFont("georgia", 74)  # Fuente para el menú
+menu_font = pygame.font.Font(None, 74)  # Fuente para el menú
 credits_font = pygame.font.SysFont("georgia", 50)  # Fuente para los créditos
 
 # Cargar la imagen de créditos
@@ -137,7 +137,7 @@ def show_start_screen():
 def show_menu():
     screen.blit(background_image, (0, 0))  # Fondo del menú
     # Mostrar opciones
-    options = ["1 - Jugar", "2 - Salir", "3 - Créditos"]
+    options = ["1 - Jugar", "2 - Creditos", "3 - Salir"]
     for i, option in enumerate(options):
         option_text = menu_font.render(option, True, BLANCO)
         screen.blit(option_text, (SCREEN_WIDTH // 8 - option_text.get_width() // 30, 350 + i * 100))

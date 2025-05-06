@@ -1,197 +1,209 @@
 import pygame
 import random
-import os
 import sys
-import subprocess
+import time
+import os
 
+# Inicializar Pygame
 pygame.init()
-
-# Configuración
 WIDTH, HEIGHT = 1366, 768
-FPS = 60
-ENEMY_SPAWN_TIME = 1200
-ENEMY_FIRE_TIME = 3000
-GAME_DURATION = 50000
-ENEMY_SPEED = 0.3
-BULLET_SPEED = -5
-ENEMY_BULLET_SPEED = 2
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Tiroteo Torrente")
+clock = pygame.time.Clock()
 
-# Colores
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
+# Tamany
+VIEW_WIDTH = 1366
+VIEW_HEIGHT = 768
 
-# Ventana
-win = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Juego de Supervivencia")
+# Fonts
+titulo_font = pygame.font.SysFont("georgia", 74, bold=True)  
+menu_font = pygame.font.Font(None, 36)
 
 # Cargar imágenes
-enemy_img = pygame.transform.scale(pygame.image.load("assets/sprites/down0.png"), (50, 50))
-heart_img = pygame.transform.scale(pygame.image.load("assets/objects/vida1.png"), (40, 40))
-player_img = pygame.transform.scale(pygame.image.load("assets/sprites/up0.png"), (70, 70))
+background = pygame.image.load("assets/background_images/1.jpg")
+player_img = pygame.image.load("assets/sprites/up0.png")
+enemy_imgs = [pygame.image.load(f"assets/sprites/down{i}.png") for i in range(4)]
+life_img = pygame.transform.scale(pygame.image.load("assets/objects/vida1.png"), (20, 20))
 
-# Fuente
-font = pygame.font.SysFont("Arial", 40)
+# Colores y fuentes
+WHITE = (255, 255, 255)
+font = pygame.font.SysFont("arial", 24)
 
-# Jugador
-player_rect = pygame.Rect(WIDTH // 2 - 35, HEIGHT - 80, 70, 70)
+# Variables del jugador
+player_x = WIDTH // 2
+player_y = HEIGHT - 60
+player_speed = 5
+player_lives = 5
+player_bullets = []
 
-# Función para mostrar texto de temporizador
+# Enemigos
+enemies = []
+enemy_bullets = []
+enemy_spawn_delay = 40
+
+# Tiempo
+start_time = pygame.time.get_ticks()
+game_duration = 120000  # 120 segundos / 2 Mins
+
+# Colors
+BLANCO = (255, 255, 255)
+NEGRO = (0, 0, 0)
+
+
+
+# Disparo
+bullet_speed = 7
+enemy_bullet_speed = 4
+
+# Función para mostrar el menú de pausa
+def mostrar_menu():
+    screen.fill(NEGRO)
+
+    title_text = titulo_font.render("PAUSA", True, BLANCO)
+    menu_text_1 = menu_font.render("1. Continuar", True, BLANCO)
+    menu_text_2 = menu_font.render("2. Salir", True, BLANCO)
+
+    screen.blit(title_text, (VIEW_WIDTH // 2 - title_text.get_width() // 2, 100))
+    screen.blit(menu_text_1, (VIEW_WIDTH // 2 - 50, VIEW_HEIGHT // 2 - 20))
+    screen.blit(menu_text_2, (VIEW_WIDTH // 2 - 50, VIEW_HEIGHT // 2 + 20))
+
+    pygame.display.update()
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:  # Continuar
+                    return
+                elif event.key == pygame.K_2:  # Salir y volver al main
+                    pygame.quit()
+                    import os
+                    os.system("python movement.py")
+                    exit()
+
+
+
+def spawn_enemy():
+    enemy = {
+        "x": random.randint(0, WIDTH - 50),
+        "y": -50,
+        "img": random.choice(enemy_imgs),
+        "speed": random.randint(1, 3),
+        "last_shot": pygame.time.get_ticks()
+    }
+    enemies.append(enemy)
+
+def draw_lives():
+    for i in range(player_lives):
+        screen.blit(life_img, (10 + i * 25, 10))
+
 def draw_timer():
     elapsed = pygame.time.get_ticks() - start_time
-    remaining = max(0, GAME_DURATION - elapsed)
+    remaining = max(0, game_duration - elapsed)
     seconds = remaining // 1000
-    text = font.render(f"Tiempo restante: {seconds}", True, WHITE)
-    win.blit(text, (WIDTH - 300, 10))
+    timer_surface = font.render(f"Tiempo: {seconds}s", True, WHITE)
+    screen.blit(timer_surface, (WIDTH - 160, 10))
+    return remaining <= 0
 
-# Función para mostrar pantalla de game over
-def show_game_over():
-    win.fill(BLACK)
-    text = font.render("PERDEDOR", True, RED)
-    win.blit(text, (WIDTH // 2 - 100, HEIGHT // 2 - 100))
+def show_victory():
+    victory = font.render("¡Lo Has Conseguido!", True, WHITE)
+    screen.blit(victory, (WIDTH // 2 - 100, HEIGHT // 2))
 
-    btn1 = pygame.Rect(WIDTH // 2 - 150, HEIGHT // 2, 300, 50)
-    btn2 = pygame.Rect(WIDTH // 2 - 150, HEIGHT // 2 + 70, 300, 50)
+# Bucle principal
+running = True
+victory = False
 
-    pygame.draw.rect(win, WHITE, btn1)
-    pygame.draw.rect(win, WHITE, btn2)
+while running:
+    clock.tick(60)
+    screen.blit(background, (0, 0))
 
-    txt1 = font.render("Ejecutar movement.py", True, BLACK)
-    txt2 = font.render("Reiniciar Juego", True, BLACK)
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] and player_x > 0:
+        player_x -= player_speed
+    if keys[pygame.K_RIGHT] and player_x < WIDTH - player_img.get_width():
+        player_x += player_speed
+    if keys[pygame.K_SPACE]:
+        if len(player_bullets) < 5:
+            player_bullets.append([player_x + player_img.get_width()//2, player_y])
+    if keys[pygame.K_ESCAPE]:
+        mostrar_menu()
 
-    win.blit(txt1, (btn1.x + 10, btn1.y + 5))
-    win.blit(txt2, (btn2.x + 35, btn2.y + 5))
 
-    pygame.display.update()
+    # Dibujar jugador
+    screen.blit(player_img, (player_x, player_y))
 
-    waiting = True
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if btn1.collidepoint(event.pos):
-                    subprocess.run([sys.executable, "movement.py"])
-                    waiting = False
-                elif btn2.collidepoint(event.pos):
-                    main()
-                    waiting = False
+    # Dibujar y mover balas del jugador
+    for bullet in player_bullets[:]:
+        bullet[1] -= bullet_speed
+        pygame.draw.rect(screen, WHITE, (*bullet, 4, 10))
+        if bullet[1] < 0:
+            player_bullets.remove(bullet)
 
-# Función para dibujar todo
-def draw_window(enemies, bullets, enemy_bullets, lives):
-    win.fill(BLACK)
+    # Spawnear enemigos
+    if random.randint(0, enemy_spawn_delay) == 0:
+        spawn_enemy()
 
-    # Jugador
-    win.blit(player_img, player_rect)
+    # Mover enemigos y disparar
+    for enemy in enemies[:]:
+        if enemy["y"] < HEIGHT // 2:
+            enemy["y"] += 0.5  # Bajada lenta
 
-    # Enemigos
-    for enemy in enemies:
-        win.blit(enemy_img, (enemy.x, enemy.y))  # Esto asegura que se vea
-
-    # Balas del jugador
-    for bullet in bullets:
-        pygame.draw.rect(win, RED, bullet)
-
-    # Balas enemigas
-    for eb in enemy_bullets:
-        pygame.draw.rect(win, WHITE, eb)
-
-    # Vidas
-    for i in range(lives):
-        win.blit(heart_img, (10 + i * 45, 10))
-
-    # Temporizador
-    draw_timer()
-
-    pygame.display.update()
-
-# Función principal
-def main():
-    global start_time
-    clock = pygame.time.Clock()
-    enemies = []
-    bullets = []
-    enemy_bullets = []
-    lives = 5
-    last_spawn = pygame.time.get_ticks()
-    last_enemy_fire = pygame.time.get_ticks()
-    start_time = pygame.time.get_ticks()
-
-    run = True
-    while run:
-        clock.tick(FPS)
+        screen.blit(enemy["img"], (enemy["x"], enemy["y"]))
+        
+        # Disparo enemigo
         now = pygame.time.get_ticks()
+        if now - enemy["last_shot"] > 2000 and random.random() < 0.02:
+            enemy_bullets.append([enemy["x"] + 20, enemy["y"] + 30])
+            enemy["last_shot"] = now
 
-        # Fin de tiempo
-        if now - start_time > GAME_DURATION:
-            run = False
-            show_game_over()
 
-        # Eventos
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_t:
-                bullet = pygame.Rect(player_rect.centerx - 5, player_rect.top, 10, 20)
-                bullets.append(bullet)
+    # Mover balas enemigas
+    for e_bullet in enemy_bullets[:]:
+        e_bullet[1] += enemy_bullet_speed
+        pygame.draw.rect(screen, (255, 0, 0), (*e_bullet, 4, 10))
+        if e_bullet[1] > HEIGHT:
+            enemy_bullets.remove(e_bullet)
 
-        # Movimiento jugador (izquierda/derecha solamente)
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] and player_rect.left > 0:
-            player_rect.x -= 5
-        if keys[pygame.K_RIGHT] and player_rect.right < WIDTH:
-            player_rect.x += 5
-        # Restringir eje Y
-        player_rect.y = HEIGHT - 80
+    # Colisiones: jugador golpeado
+    for e_bullet in enemy_bullets[:]:
+        if player_x < e_bullet[0] < player_x + player_img.get_width() and \
+           player_y < e_bullet[1] < player_y + player_img.get_height():
+            enemy_bullets.remove(e_bullet)
+            player_lives -= 1
+            if player_lives <= 0:
+                running = False
 
-        # Spawneo de enemigos
-        if now - last_spawn > ENEMY_SPAWN_TIME:
-            x = random.randint(0, WIDTH - 50)
-            new_enemy = pygame.Rect(x, -50, 50, 50)
-            enemies.append(new_enemy)
-            last_spawn = now
-
-        # Disparos enemigos
-        if now - last_enemy_fire > ENEMY_FIRE_TIME:
-            for enemy in enemies:
-                if random.random() < 0.4:
-                    eb = pygame.Rect(enemy.centerx - 3, enemy.bottom, 6, 15)
-                    enemy_bullets.append(eb)
-            last_enemy_fire = now
-
-        # Movimiento enemigos
-        for enemy in enemies:
-            enemy.y += ENEMY_SPEED
-
-        # Movimiento balas jugador
-        for bullet in bullets[:]:
-            bullet.y += BULLET_SPEED
-            if bullet.y < 0:
-                bullets.remove(bullet)
-
-        # Movimiento balas enemigas
-        for eb in enemy_bullets[:]:
-            eb.y += ENEMY_BULLET_SPEED
-            if eb.colliderect(player_rect):
-                enemy_bullets.remove(eb)
-                lives -= 1
-                if lives <= 0:
-                    run = False
-                    show_game_over()
-            elif eb.y > HEIGHT:
-                enemy_bullets.remove(eb)
-
-        # Colisiones bala-jugador y enemigos
+    # Colisiones: balas del jugador golpean enemigos
+    for bullet in player_bullets[:]:
         for enemy in enemies[:]:
-            for bullet in bullets[:]:
-                if enemy.colliderect(bullet):
-                    bullets.remove(bullet)
-                    enemies.remove(enemy)
-                    break
+            if enemy["x"] < bullet[0] < enemy["x"] + enemy["img"].get_width() and \
+               enemy["y"] < bullet[1] < enemy["y"] + enemy["img"].get_height():
+                try:
+                    player_bullets.remove(bullet)
+                except ValueError:
+                    pass
+                enemies.remove(enemy)
+                break
 
-        draw_window(enemies, bullets, enemy_bullets, lives)
+    draw_lives()
+    time_up = draw_timer()
 
-if __name__ == "__main__":
-    main()
+    if time_up and player_lives > 0:
+        show_victory()
+        victory = True
+
+    pygame.display.flip()
+
+    if time_up:
+        pygame.time.delay(3000)
+        running = False
+
+    # Manejar eventos
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+pygame.quit()
+sys.exit()

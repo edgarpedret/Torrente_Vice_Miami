@@ -84,6 +84,8 @@ def mostrar_menu():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
                     pygame.quit()
+                    import os
+                    os.system("python main.py")
                     exit()
                 elif event.key == pygame.K_2:
                     return
