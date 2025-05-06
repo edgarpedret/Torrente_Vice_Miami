@@ -52,11 +52,13 @@ credits_image = pygame.transform.scale(credits_image, (SCREEN_WIDTH, SCREEN_HEIG
 # Texto de créditos
 credits_text = [
     "Desarrollado por: Institut Antoni Ballester",
-    "Programación: Edgar Pedret y Javier Jaca",
+    "Programación: Edgar Pedret",
     "Arte: Kristopher Gonzalez",
     "Música: El Fary, Los Chichos",
-    "Guión: Kristopher Gonzalez, Javier Jaca y Edgar Pedret",
-    "Gracias por jugar a nuestro juego, esperemos que hayas disfrutado!!!"
+    "Guión: Javier Jaca",
+    "Gracias por jugar a nuestro juego",
+    "Esperemos que hayas disfrutado!!!",
+    "Hasta la próxima, chinita",
 ]
 
 
