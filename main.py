@@ -31,7 +31,7 @@ AMARILLO_TITULO = (215, 150, 0)
 AMARILLO_SUBSTITULO = (198, 119, 0)
 
 # Cargar la imagen de inicio
-start_image = pygame.image.load('assets/background_images/1fondo.png')
+start_image = pygame.image.load('assets/background_images/BETA.png')
 start_image = pygame.transform.scale(start_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Cargar la imagen de fondo del menú
@@ -46,7 +46,7 @@ menu_font = pygame.font.Font(None, 74)  # Fuente para el menú
 credits_font = pygame.font.SysFont("georgia", 50)  # Fuente para los créditos
 
 # Cargar la imagen de créditos
-credits_image = pygame.image.load('assets/background_images/1fondo.png')
+credits_image = pygame.image.load('assets/background_images/BETA.png')
 credits_image = pygame.transform.scale(credits_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Texto de créditos

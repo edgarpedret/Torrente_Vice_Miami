@@ -55,6 +55,97 @@ NEGRO = (0, 0, 0)
 bullet_speed = 7
 enemy_bullet_speed = 4
 
+# Pantalla Final del Joc
+def mostrar_victoria_final():
+    overlay = pygame.Surface((WIDTH, HEIGHT))
+    overlay.fill(NEGRO)
+
+    texto = titulo_font.render("¡LO HAS CONSEGUIDO!", True, BLANCO)
+    texto_rect = texto.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+
+    # FADE IN (0 → 255)
+    for alpha in range(0, 256, 5):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        overlay.set_alpha(alpha)
+        screen.blit(background, (0, 0))
+        screen.blit(overlay, (0, 0))
+        screen.blit(texto, texto_rect)
+        pygame.display.update()
+        clock.tick(30)
+
+    # Mantener visible 2 segundos
+    time.sleep(2)
+
+    # FADE OUT (255 → 0)
+    for alpha in range(255, -1, -5):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        overlay.set_alpha(alpha)
+        screen.blit(background, (0, 0))
+        screen.blit(overlay, (0, 0))
+        screen.blit(texto, texto_rect)
+        pygame.display.update()
+        clock.tick(30)
+
+    # Lanzar siguiente fase
+    pygame.quit()
+    os.system("python3 main.py")
+    sys.exit()
+
+
+# Que hacer
+def mostrar_mensaje_mision():
+    mensaje = font.render("Aguanta a que llegue la policía", True, WHITE)
+    screen.blit(mensaje, (WIDTH // 2 - mensaje.get_width() // 2, 40))
+
+
+# Amenaza
+def mostrar_amenaza_inicial():
+    overlay = pygame.Surface((WIDTH, HEIGHT))
+    overlay.fill(NEGRO)
+
+    texto = titulo_font.render("Te vamos a matar", True, BLANCO)
+    texto_rect = texto.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+
+    # FADE IN (0 → 255)
+    for alpha in range(0, 256, 5):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        overlay.set_alpha(alpha)
+        screen.blit(background, (0, 0))  # Muestra fondo por detrás
+        screen.blit(overlay, (0, 0))
+        screen.blit(texto, texto_rect)
+        pygame.display.update()
+        clock.tick(30)
+
+    # Mantener el texto visible 1.5 segundos
+    time.sleep(1.5)
+
+    # FADE OUT (255 → 0)
+    for alpha in range(255, -1, -5):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+        overlay.set_alpha(alpha)
+        screen.blit(background, (0, 0))
+        screen.blit(overlay, (0, 0))
+        screen.blit(texto, texto_rect)
+        pygame.display.update()
+        clock.tick(30)
+
+
 # Función para mostrar el menú de pausa
 def mostrar_menu():
     screen.fill(NEGRO)
@@ -111,6 +202,8 @@ def show_victory():
     victory = font.render("¡Lo Has Conseguido!", True, WHITE)
     screen.blit(victory, (WIDTH // 2 - 100, HEIGHT // 2))
 
+# Mostrar amenaza
+mostrar_amenaza_inicial()
 # Bucle principal
 running = True
 victory = False
@@ -186,13 +279,14 @@ while running:
                     pass
                 enemies.remove(enemy)
                 break
-
+    mostrar_mensaje_mision()
     draw_lives()
     time_up = draw_timer()
 
     if time_up and player_lives > 0:
-        show_victory()
-        victory = True
+        mostrar_victoria_final()
+    elif time_up:
+        running = False  # Derrota por tiempo sin vidas
 
     pygame.display.flip()
 
