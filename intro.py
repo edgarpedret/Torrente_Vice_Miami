@@ -56,7 +56,7 @@ def run_trailer():
     time.sleep(2)
 
     pygame.quit()
-    subprocess.run(["python", "main.py"])  # O usa "python3" según tu entorno
+    subprocess.run(["python3", "main.py"])  # O usa "python3" según tu entorno
     sys.exit()
 
 # Loop principal

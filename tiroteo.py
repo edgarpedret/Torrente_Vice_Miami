@@ -80,7 +80,7 @@ def mostrar_menu():
                 elif event.key == pygame.K_2:  # Salir y volver al main
                     pygame.quit()
                     import os
-                    os.system("python movement.py")
+                    os.system("python3 movement.py")
                     exit()
 
 

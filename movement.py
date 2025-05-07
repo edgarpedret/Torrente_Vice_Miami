@@ -34,7 +34,7 @@ titulo_font = pygame.font.SysFont("georgia", 74, bold=True)
 menu_font = pygame.font.Font(None, 36)
 
 # Cargar imagen de fondo una sola vez
-background_image = pygame.image.load('assets/backgrounds/back1.jpg').convert()
+background_image = pygame.image.load('assets/background_images/mapa.jpg').convert()
 background_width = background_image.get_width()
 background_height = background_image.get_height()
 
@@ -85,7 +85,7 @@ def mostrar_menu():
                 if event.key == pygame.K_1:
                     pygame.quit()
                     import os
-                    os.system("python main.py")
+                    os.system("python3 main.py")
                     exit()
                 elif event.key == pygame.K_2:
                     return
