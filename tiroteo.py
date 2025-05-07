@@ -22,8 +22,8 @@ menu_font = pygame.font.Font(None, 36)
 # Cargar imágenes
 background = pygame.image.load("assets/background_images/dreams.png")
 player_img = pygame.image.load("assets/sprites/up0.png")
-enemy_imgs = [pygame.image.load(f"assets/sprites/down{i}.png") for i in range(4)]
-life_img = pygame.transform.scale(pygame.image.load("assets/objects/vida1.png"), (20, 20))
+enemy_imgs = [pygame.image.load(f"assets/sprites/gitano{i}.png") for i in range(4)]
+life_img = pygame.transform.scale(pygame.image.load("assets/objects/vida1.png"), (25, 25))
 
 # Colores y fuentes
 WHITE = (255, 255, 255)
