@@ -20,7 +20,7 @@ titulo_font = pygame.font.SysFont("georgia", 74, bold=True)
 menu_font = pygame.font.Font(None, 36)
 
 # Cargar imágenes
-background = pygame.image.load("assets/background_images/1.jpg")
+background = pygame.image.load("assets/background_images/dreams.png")
 player_img = pygame.image.load("assets/sprites/up0.png")
 enemy_imgs = [pygame.image.load(f"assets/sprites/down{i}.png") for i in range(4)]
 life_img = pygame.transform.scale(pygame.image.load("assets/objects/vida1.png"), (20, 20))
